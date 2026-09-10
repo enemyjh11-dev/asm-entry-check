@@ -2,26 +2,34 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#f3f6fb" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#f4f7fb" />
+  <title>ASM 입문·출문 메시지</title>
 
-  <title>ASM Entry / Exit</title>
+  <!-- Kakao JavaScript SDK -->
+  <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.8.2/kakao.min.js" crossorigin="anonymous"></script>
 
   <style>
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     :root {
-      --navy: #17345f;
-      --blue: #1857b7;
-      --light-blue: #a9c3eb;
-      --bg: #f3f6fb;
-      --card: #ffffff;
-      --line: #d4deec;
-      --text: #102849;
-      --muted: #667996;
-      --soft: #f6f8fc;
+      --bg: #f4f7fb;
+      --navy: #193860;
+      --navy-dark: #132e50;
+      --blue: #2868c7;
+      --text: #173251;
+      --muted: #718198;
+      --muted2: #8b9aaf;
+      --line: #d5deea;
+      --line2: #cbd6e4;
+      --white: #ffffff;
+      --preview: #f6f8fb;
+      --pill: #e5efff;
+      --kakao: #fee500;
+    }
+
+    html {
+      background: var(--bg);
     }
 
     body {
@@ -29,99 +37,90 @@
       background: var(--bg);
       color: var(--text);
       font-family:
-        -apple-system,
-        BlinkMacSystemFont,
-        "Segoe UI",
-        "Noto Sans KR",
-        Arial,
-        sans-serif;
+        -apple-system, BlinkMacSystemFont, "Segoe UI",
+        "Apple SD Gothic Neo", "Noto Sans KR", Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
     }
 
-    button,
-    input,
-    textarea {
+    button, textarea {
       font: inherit;
     }
 
     button {
-      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
     }
 
     .page {
-      width: 100%;
       min-height: 100vh;
-      padding: 0 18px 32px;
+      padding: 0 18px 34px;
     }
 
     .wrap {
-      max-width: 1180px;
+      width: min(1180px, 100%);
       margin: 0 auto;
     }
 
-    /* =========================
-       HEADER
-    ========================= */
-
+    /* ===== Header ===== */
     .topbar {
-      height: 72px;
+      min-height: 74px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      border-bottom: 1px solid #d7e0ec;
+      border-bottom: 1px solid #d7e0eb;
     }
 
     .brand {
       display: flex;
       align-items: baseline;
-      gap: 14px;
+      gap: 13px;
+      white-space: nowrap;
     }
 
-    .asm {
-      font-size: 22px;
-      font-weight: 900;
-      letter-spacing: -1px;
-      color: #102849;
+    .brand-asm {
+      font-size: 31px;
+      line-height: 1;
+      font-weight: 500;
+      letter-spacing: -1.2px;
+      color: #1c3656;
     }
 
-    .field-tools {
-      font-size: 10px;
-      font-weight: 900;
-      letter-spacing: 2.5px;
-      color: #536c90;
+    .brand-sub {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      color: #76879d;
     }
 
-    .time-area {
+    .clock-wrap {
       display: flex;
       align-items: center;
-      gap: 14px;
+      gap: 12px;
+      white-space: nowrap;
     }
 
-    .time-label {
-      font-size: 11px;
-      color: #8795aa;
+    .clock-label {
+      font-size: 12px;
+      color: #718198;
     }
 
-    .time {
-      font-size: 17px;
-      font-weight: 900;
-      color: #102849;
+    #clock {
+      font-size: 20px;
+      font-weight: 850;
+      color: #183352;
       font-variant-numeric: tabular-nums;
     }
 
-    /* =========================
-       TITLE
-    ========================= */
-
+    /* ===== Hero ===== */
     .hero {
-      padding: 38px 0 30px;
+      padding: 43px 0 34px;
     }
 
     .eyebrow {
-      font-size: 11px;
-      font-weight: 900;
-      letter-spacing: 1.8px;
-      color: #0d54b6;
-      margin-bottom: 14px;
+      margin-bottom: 19px;
+      color: #26619f;
+      font-size: 12px;
+      letter-spacing: 3px;
+      font-weight: 600;
     }
 
     .hero h1 {
@@ -129,251 +128,243 @@
       font-size: 34px;
       line-height: 1.15;
       letter-spacing: -1.8px;
-      color: #102849;
+      font-weight: 900;
+      color: #173251;
     }
 
     .hero p {
-      margin: 13px 0 0;
-      font-size: 14px;
-      color: #6b7d97;
+      margin: 17px 0 0;
+      font-size: 17px;
+      line-height: 1.5;
+      color: #74849a;
     }
 
-    /* =========================
-       MAIN LAYOUT
-    ========================= */
-
-    .main-grid {
-      display: grid;
-      grid-template-columns: minmax(0, 1.18fr) minmax(360px, 0.92fr);
-      gap: 34px;
-      align-items: start;
-    }
-
+    /* ===== Common sections ===== */
     .section {
-      margin-bottom: 31px;
+      margin-bottom: 34px;
     }
 
     .section-head {
       display: flex;
       align-items: center;
-      gap: 9px;
-      margin-bottom: 15px;
+      gap: 12px;
+      margin-bottom: 20px;
     }
 
-    .section-num {
-      font-size: 10px;
-      font-weight: 900;
-      color: #536f9b;
-      letter-spacing: 0.5px;
+    .section-no {
+      font-size: 12px;
+      font-weight: 800;
+      color: #6e86a4;
+      letter-spacing: 1px;
     }
 
     .section-title {
-      font-size: 15px;
+      font-size: 20px;
       font-weight: 900;
-      color: #102849;
+      letter-spacing: -0.6px;
+      color: #173251;
     }
-
-    .section-sub {
-      font-size: 12px;
-      color: #75859d;
-      margin-bottom: 15px;
-    }
-
-    /* =========================
-       ENTRY / EXIT
-    ========================= */
 
     .mode-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 10px;
+      gap: 18px;
+    }
+
+    .mode-btn,
+    .region-btn,
+    .person-btn,
+    .special-btn {
+      border: 1px solid var(--line2);
+      background: var(--white);
+      color: #526883;
+      font-weight: 800;
+      transition: 0.15s ease;
     }
 
     .mode-btn {
-      height: 54px;
-      background: #fff;
-      border: 1px solid #ccd8e8;
-      border-radius: 11px;
-      font-size: 15px;
-      font-weight: 800;
-      color: #657793;
-      transition: 0.15s;
+      height: 104px;
+      border-radius: 22px;
+      font-size: 24px;
     }
 
-    .mode-btn.active {
+    .mode-btn.active,
+    .region-btn.active,
+    .special-btn.active {
       background: var(--navy);
       border-color: var(--navy);
       color: #fff;
-      box-shadow: 0 5px 12px rgba(16, 40, 73, 0.11);
+      box-shadow: 0 9px 22px rgba(25, 56, 96, 0.12);
     }
 
-    /* =========================
-       REGION
-    ========================= */
+    /* ===== Rest area appears only after mode selection ===== */
+    #workflow {
+      display: none;
+    }
 
+    #workflow.show {
+      display: block;
+      animation: reveal .2s ease-out;
+    }
+
+    @keyframes reveal {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .content-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.08fr) minmax(390px, 0.92fr);
+      gap: 34px;
+      align-items: start;
+    }
+
+    /* ===== Region ===== */
     .region-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
+      gap: 18px;
     }
 
     .region-btn {
-      height: 50px;
-      background: #fff;
-      border: 1px solid #ccd8e8;
-      border-radius: 10px;
-      font-size: 14px;
-      font-weight: 800;
-      color: #536782;
+      height: 82px;
+      border-radius: 19px;
+      font-size: 21px;
     }
 
-    .region-btn.active {
-      background: var(--navy);
-      border-color: var(--navy);
-      color: #fff;
-      box-shadow: 0 5px 12px rgba(16, 40, 73, 0.11);
-    }
-
-    /* =========================
-       PEOPLE
-    ========================= */
-
+    /* ===== People ===== */
     .people-toolbar {
       display: flex;
-      align-items: center;
       justify-content: space-between;
-      margin-bottom: 15px;
+      align-items: center;
+      margin: 4px 0 20px;
     }
 
-    .multi-text {
-      font-size: 12px;
-      color: #70819a;
+    .people-hint {
+      font-size: 16px;
+      color: #75859a;
     }
 
-    .people-right {
+    .people-tools {
       display: flex;
       align-items: center;
-      gap: 13px;
+      gap: 18px;
     }
 
     .count-pill {
-      min-width: 37px;
-      height: 31px;
-      padding: 0 8px;
-      border-radius: 999px;
-      background: #e1ebff;
-      color: #0e57cb;
-      font-size: 12px;
-      font-weight: 900;
-      display: flex;
+      min-width: 52px;
+      height: 52px;
+      padding: 0 13px;
+      display: inline-flex;
       align-items: center;
       justify-content: center;
+      border-radius: 999px;
+      background: var(--pill);
+      color: #1763c9;
+      font-size: 18px;
+      font-weight: 900;
     }
 
     .clear-btn {
       border: 0;
       background: transparent;
-      padding: 4px;
-      font-size: 11px;
-      color: #7a8ba4;
+      padding: 8px 0;
+      color: #6c7f97;
+      font-size: 15px;
+      font-weight: 650;
     }
 
     .people-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 9px;
+      gap: 10px 16px;
     }
 
     .person-btn {
-      height: 44px;
-      background: #fff;
-      border: 1px solid #ced9e8;
-      border-radius: 9px;
-      color: #526782;
-      font-size: 13px;
-      font-weight: 750;
-      transition: 0.12s;
+      height: 70px;
+      border-radius: 16px;
+      font-size: 18px;
+      position: relative;
     }
 
     .person-btn::before {
-      content: "○";
+      content: "";
+      width: 23px;
+      height: 23px;
       display: inline-block;
-      margin-right: 8px;
-      color: #9eb4d1;
-      font-size: 14px;
+      vertical-align: -5px;
+      margin-right: 11px;
+      border: 2px solid #c9d5e3;
+      border-radius: 50%;
+      background: white;
     }
 
     .person-btn.selected {
-      border-color: #214e87;
-      background: #edf4ff;
-      color: #17345f;
-      font-weight: 900;
+      color: #1b385a;
+      border-color: #aac1de;
+      background: #eef5ff;
     }
 
     .person-btn.selected::before {
-      content: "●";
-      color: #1d5baa;
+      border: 7px solid #2c6bc2;
+      background: white;
     }
 
-    /* =========================
-       CHECKS
-    ========================= */
-
+    /* ===== Checks ===== */
     .check-card {
-      background: #fff;
-      border: 1px solid #ccd8e8;
-      border-radius: 10px;
-      padding: 16px 15px;
-      margin-bottom: 10px;
       display: flex;
+      gap: 17px;
       align-items: flex-start;
-      gap: 14px;
+      width: 100%;
+      padding: 22px 22px;
+      margin-bottom: 13px;
+      border: 1px solid var(--line2);
+      border-radius: 16px;
+      background: white;
       cursor: pointer;
     }
 
-    .check-box {
-      width: 20px;
-      height: 20px;
-      min-width: 20px;
-      border: 1px solid #95a6bc;
+    .check-square {
+      width: 30px;
+      height: 30px;
+      min-width: 30px;
+      border: 1.5px solid #7e8791;
       background: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      border-radius: 2px;
+      display: grid;
+      place-items: center;
+      color: transparent;
+      font-size: 20px;
+      font-weight: 900;
       margin-top: 1px;
-      font-size: 14px;
-      font-weight: 900;
-      color: white;
     }
 
-    .check-card.checked .check-box {
-      background: var(--navy);
+    .check-card.checked .check-square {
+      color: #fff;
       border-color: var(--navy);
+      background: var(--navy);
     }
 
-    .check-main {
-      font-size: 13px;
-      font-weight: 900;
-      color: #102849;
+    .check-name {
       margin-bottom: 8px;
+      font-size: 18px;
+      font-weight: 900;
+      color: #183352;
     }
 
     .check-desc {
-      font-size: 11px;
-      color: #71829b;
-      line-height: 1.6;
+      font-size: 13px;
+      line-height: 1.55;
+      color: #75869d;
     }
 
     .check-guide {
-      margin-top: 14px;
-      font-size: 11px;
-      color: #647b9c;
+      margin-top: 13px;
+      font-size: 13px;
+      color: #70839c;
     }
 
-    /* =========================
-       SPECIAL
-    ========================= */
-
+    /* ===== Special ===== */
     .special-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -381,24 +372,14 @@
     }
 
     .special-btn {
-      height: 49px;
-      border: 1px solid #ccd8e8;
-      border-radius: 10px;
-      background: #fff;
-      color: #526782;
-      font-size: 13px;
-      font-weight: 800;
-    }
-
-    .special-btn.active {
-      background: var(--navy);
-      border-color: var(--navy);
-      color: #fff;
+      height: 70px;
+      border-radius: 16px;
+      font-size: 20px;
     }
 
     .special-text-wrap {
       display: none;
-      margin-top: 10px;
+      margin-top: 12px;
     }
 
     .special-text-wrap.show {
@@ -407,73 +388,71 @@
 
     .special-text {
       width: 100%;
-      min-height: 92px;
+      min-height: 100px;
+      padding: 14px 16px;
+      border: 1px solid var(--line2);
+      border-radius: 14px;
+      outline: none;
       resize: vertical;
       background: white;
-      border: 1px solid #ccd8e8;
-      border-radius: 10px;
-      padding: 12px;
-      outline: none;
-      color: #102849;
-      font-size: 13px;
-      line-height: 1.55;
+      color: var(--text);
+      font-size: 16px;
+      line-height: 1.6;
     }
 
-    /* =========================
-       MESSAGE CARD
-    ========================= */
-
+    /* ===== Message panel ===== */
     .message-panel {
       position: sticky;
-      top: 20px;
-      background: #fff;
-      border: 1px solid #d3deeb;
-      border-radius: 20px;
-      padding: 27px 27px 25px;
-      box-shadow: 0 13px 34px rgba(46, 71, 104, 0.09);
+      top: 16px;
+      border: 1px solid #d4deea;
+      border-radius: 24px;
+      background: white;
+      padding: 26px;
+      box-shadow: 0 14px 34px rgba(51, 77, 111, .09);
     }
 
     .message-head {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 21px;
+      margin-bottom: 28px;
     }
 
-    .message-title-row {
+    .message-head-left {
       display: flex;
-      gap: 10px;
       align-items: center;
+      gap: 14px;
     }
 
-    .message-status {
+    .status {
+      padding: 10px 13px;
+      border-radius: 10px;
       background: #f1f4f8;
-      color: #7e8ca2;
-      border-radius: 7px;
-      padding: 7px 9px;
-      font-size: 10px;
+      color: #7b8ba0;
+      font-size: 14px;
     }
 
     .instruction {
-      font-size: 12px;
-      color: #72849c;
-      margin-bottom: 16px;
+      margin-bottom: 20px;
+      font-size: 17px;
+      line-height: 1.45;
+      color: #6f8198;
     }
 
     .generate-btn {
       width: 100%;
-      height: 55px;
+      height: 68px;
       border: 0;
-      border-radius: 10px;
-      background: #a8c1ea;
+      border-radius: 14px;
+      background: #a9c3ea;
       color: white;
-      font-size: 15px;
+      font-size: 20px;
       font-weight: 900;
-      margin-bottom: 16px;
+      margin-bottom: 20px;
     }
 
     .generate-btn.ready {
-      background: var(--navy);
+      background: var(--blue);
     }
 
     .generate-btn:disabled {
@@ -481,106 +460,107 @@
     }
 
     .preview-box {
-      position: relative;
-      min-height: 285px;
-      background: #f5f7fa;
-      border: 1px solid #d5dfeb;
-      border-radius: 10px;
-      padding: 18px 20px 40px;
-      color: #4f6584;
-      font-size: 15px;
-      line-height: 1.5;
-      white-space: pre-wrap;
+      min-height: 430px;
+      display: flex;
+      flex-direction: column;
+      border: 1px solid #d6dfeb;
+      border-radius: 16px;
+      background: var(--preview);
+      padding: 28px 30px 22px;
     }
 
     .preview-label {
-      color: #285da4;
-      font-size: 12px;
-      font-weight: 900;
-      margin-bottom: 12px;
+      margin-bottom: 35px;
+      font-size: 16px;
+      font-weight: 800;
+      color: #496884;
     }
 
-    .preview-content {
+    #preview {
+      flex: 1;
       white-space: pre-wrap;
       word-break: keep-all;
-      font-weight: 600;
+      font-size: 21px;
+      line-height: 1.55;
+      letter-spacing: -0.25px;
+      font-weight: 520;
+      color: #1f3a5a;
     }
 
-    .preview-placeholder {
-      color: #7a8fac;
+    #preview.placeholder {
+      color: #8494aa;
+      font-size: 18px;
     }
 
     .preview-foot {
-      position: absolute;
-      left: 20px;
-      right: 20px;
-      bottom: 12px;
-      border-top: 1px dashed #d1dae6;
-      padding-top: 8px;
-      font-size: 11px;
-      color: #7186a3;
-    }
-
-    .copy-btn {
-      width: 100%;
-      height: 47px;
-      margin-top: 12px;
-      border: 1px solid #d6dfeb;
-      border-radius: 9px;
-      background: #fff;
-      color: #a0b0c7;
+      border-top: 1px dashed #d3dce7;
+      margin-top: 26px;
+      padding-top: 18px;
       font-size: 14px;
-      font-weight: 800;
+      line-height: 1.55;
+      color: #7d8ea5;
     }
 
-    .copy-btn.enabled {
-      color: #17345f;
-      border-color: #aebfd4;
-    }
-
-    .kakao-share-btn {
+    .copy-btn,
+    .kakao-btn {
       width: 100%;
-      height: 47px;
-      margin-top: 9px;
-      border: 0;
-      border-radius: 9px;
-      background: #FEE500;
-      color: #191919;
-      font-size: 14px;
+      height: 62px;
+      border-radius: 14px;
+      font-size: 19px;
       font-weight: 900;
     }
 
-    .kakao-share-btn:disabled {
-      opacity: 0.4;
+    .copy-btn {
+      margin-top: 18px;
+      border: 1px solid #b8c9dd;
+      background: white;
+      color: #184476;
+    }
+
+    .kakao-btn {
+      margin-top: 11px;
+      border: 0;
+      background: var(--kakao);
+      color: #191919;
+    }
+
+    .copy-btn:disabled,
+    .kakao-btn:disabled {
+      opacity: .42;
       cursor: not-allowed;
     }
 
     .message-help {
+      margin-top: 18px;
       text-align: center;
-      padding-top: 23px;
-      font-size: 10px;
-      line-height: 1.8;
-      color: #8b6c7e;
+      color: #8b7b8b;
+      font-size: 13px;
+      line-height: 1.6;
     }
 
-    /* =========================
-       TOAST
-    ========================= */
+    .footer {
+      margin-top: 50px;
+      padding-bottom: 22px;
+      color: #91a0b1;
+      font-size: 14px;
+    }
 
     .toast {
       position: fixed;
       left: 50%;
-      bottom: 25px;
-      transform: translate(-50%, 15px);
-      background: #102849;
-      color: white;
-      padding: 11px 17px;
+      bottom: calc(26px + env(safe-area-inset-bottom));
+      transform: translate(-50%, 14px);
+      z-index: 9999;
+      max-width: calc(100vw - 32px);
+      padding: 12px 18px;
       border-radius: 999px;
-      font-size: 12px;
+      background: #173251;
+      color: #fff;
+      font-size: 14px;
+      text-align: center;
       opacity: 0;
       pointer-events: none;
-      transition: .2s;
-      z-index: 1000;
+      transition: .2s ease;
     }
 
     .toast.show {
@@ -588,1145 +568,874 @@
       transform: translate(-50%, 0);
     }
 
-    /* =========================
-       MOBILE
-    ========================= */
-
+    /* ===== Mobile ===== */
     @media (max-width: 820px) {
-      .main-grid {
-        grid-template-columns: 1fr;
+      .page {
+        padding: 0 20px 30px;
+      }
+
+      .topbar {
+        min-height: 110px;
+      }
+
+      .brand-asm {
+        font-size: 31px;
+      }
+
+      .brand-sub {
+        font-size: 10px;
+      }
+
+      .clock-label {
+        font-size: 13px;
+      }
+
+      #clock {
+        font-size: 22px;
+      }
+
+      .hero {
+        padding: 56px 0 47px;
+      }
+
+      .eyebrow {
+        margin-bottom: 24px;
+        font-size: 13px;
+      }
+
+      .hero h1 {
+        font-size: 39px;
+        letter-spacing: -2.3px;
+      }
+
+      .hero p {
+        margin-top: 23px;
+        font-size: 20px;
+      }
+
+      .section {
+        margin-bottom: 43px;
+      }
+
+      .section-head {
+        margin-bottom: 28px;
+      }
+
+      .section-no {
+        font-size: 13px;
+      }
+
+      .section-title {
+        font-size: 24px;
+      }
+
+      .mode-grid {
+        gap: 20px;
+      }
+
+      .mode-btn {
+        height: 104px;
+        font-size: 24px;
+      }
+
+      .content-grid {
+        display: block;
+      }
+
+      .region-grid {
+        gap: 12px;
+      }
+
+      .region-btn {
+        height: 102px;
+        font-size: 23px;
+      }
+
+      .people-toolbar {
+        margin-bottom: 24px;
+      }
+
+      .people-hint {
+        font-size: 17px;
+      }
+
+      .clear-btn {
+        font-size: 16px;
+      }
+
+      .people-grid {
+        gap: 11px 16px;
+      }
+
+      .person-btn {
+        height: 90px;
+        font-size: 20px;
+        border-radius: 16px;
+      }
+
+      .person-btn::before {
+        width: 25px;
+        height: 25px;
+        margin-right: 10px;
+      }
+
+      .check-card {
+        padding: 27px 24px;
+        border-radius: 16px;
+      }
+
+      .check-name {
+        font-size: 21px;
+      }
+
+      .check-desc,
+      .check-guide {
+        font-size: 14px;
+      }
+
+      .special-btn {
+        height: 84px;
+        font-size: 22px;
       }
 
       .message-panel {
         position: static;
+        margin-top: 52px;
+        padding: 30px 30px 26px;
+        border-radius: 24px;
+      }
+
+      .message-head {
+        margin-bottom: 32px;
+      }
+
+      .instruction {
+        font-size: 20px;
+        margin-bottom: 28px;
+      }
+
+      .generate-btn {
+        height: 74px;
+        font-size: 21px;
+      }
+
+      .preview-box {
+        min-height: 560px;
+        padding: 34px 40px 26px;
+      }
+
+      .preview-label {
+        font-size: 16px;
+        margin-bottom: 43px;
+      }
+
+      #preview {
+        font-size: 23px;
+        line-height: 1.55;
+      }
+
+      #preview.placeholder {
+        font-size: 19px;
+      }
+
+      .preview-foot {
+        font-size: 15px;
+      }
+
+      .copy-btn,
+      .kakao-btn {
+        height: 69px;
+        font-size: 20px;
+      }
+
+      .footer {
+        margin-top: 61px;
+        font-size: 16px;
       }
     }
 
     @media (max-width: 520px) {
       .page {
-        padding: 0 12px 25px;
+        padding-left: 20px;
+        padding-right: 20px;
       }
 
       .topbar {
-        height: 62px;
+        min-height: 104px;
       }
 
-      .field-tools {
-        font-size: 8px;
+      .brand {
+        gap: 11px;
       }
 
-      .asm {
-        font-size: 20px;
-      }
-
-      .time-label {
-        display: none;
-      }
-
-      .time {
-        font-size: 15px;
-      }
-
-      .hero {
-        padding: 28px 0 25px;
-      }
-
-      .hero h1 {
+      .brand-asm {
         font-size: 29px;
       }
 
-      .people-grid {
-        grid-template-columns: repeat(3, 1fr);
-        gap: 7px;
+      .clock-wrap {
+        gap: 10px;
       }
 
-      .person-btn {
+      .clock-label {
         font-size: 12px;
       }
 
+      #clock {
+        font-size: 20px;
+      }
+
+      .hero {
+        padding: 49px 0 42px;
+      }
+
+      .hero h1 {
+        font-size: clamp(34px, 9vw, 40px);
+      }
+
+      .hero p {
+        font-size: 18px;
+      }
+
+      .mode-grid {
+        gap: 12px;
+      }
+
+      .mode-btn {
+        height: 92px;
+        border-radius: 18px;
+        font-size: 21px;
+      }
+
+      .region-grid {
+        gap: 9px;
+      }
+
+      .region-btn {
+        height: 78px;
+        border-radius: 16px;
+        font-size: 19px;
+      }
+
+      .section-title {
+        font-size: 22px;
+      }
+
+      .people-tools {
+        gap: 10px;
+      }
+
+      .count-pill {
+        min-width: 47px;
+        height: 47px;
+        font-size: 16px;
+      }
+
+      .people-grid {
+        gap: 8px 9px;
+      }
+
+      .person-btn {
+        height: 70px;
+        padding: 0 5px;
+        font-size: 16px;
+        border-radius: 14px;
+      }
+
+      .person-btn::before {
+        width: 20px;
+        height: 20px;
+        margin-right: 7px;
+        border-width: 1.5px;
+        vertical-align: -4px;
+      }
+
+      .person-btn.selected::before {
+        border-width: 6px;
+      }
+
+      .check-card {
+        padding: 21px 18px;
+      }
+
+      .check-name {
+        font-size: 18px;
+      }
+
+      .check-desc,
+      .check-guide {
+        font-size: 12px;
+      }
+
+      .special-btn {
+        height: 70px;
+        font-size: 19px;
+      }
+
       .message-panel {
-        padding: 20px 15px;
+        padding: 24px 20px 22px;
+        border-radius: 22px;
+      }
+
+      .message-head-left {
+        gap: 11px;
+      }
+
+      .status {
+        font-size: 12px;
+      }
+
+      .instruction {
+        font-size: 17px;
+      }
+
+      .generate-btn {
+        height: 64px;
+        font-size: 18px;
       }
 
       .preview-box {
-        min-height: 250px;
+        min-height: 430px;
+        padding: 28px 25px 22px;
+      }
+
+      .preview-label {
+        font-size: 14px;
+        margin-bottom: 34px;
+      }
+
+      #preview {
+        font-size: 18px;
+        line-height: 1.6;
+      }
+
+      #preview.placeholder {
+        font-size: 16px;
+      }
+
+      .preview-foot {
+        font-size: 12px;
+      }
+
+      .copy-btn,
+      .kakao-btn {
+        height: 60px;
+        font-size: 17px;
       }
     }
   </style>
 </head>
 
-
 <body>
-
-<div class="page">
-  <div class="wrap">
-
-    <!-- HEADER -->
-    <header class="topbar">
-
-      <div class="brand">
-        <div class="asm">ASM</div>
-        <div class="field-tools">FIELD TOOLS</div>
-      </div>
-
-      <div class="time-area">
-        <div class="time-label">한국 시간</div>
-        <div id="clock" class="time">--:--</div>
-      </div>
-
-    </header>
-
-
-    <!-- TITLE -->
-    <section class="hero">
-
-      <div class="eyebrow">
-        ENTRY / EXIT
-      </div>
-
-      <h1>
-        입문·출문 메시지
-      </h1>
-
-      <p>
-        입문인지 출문인지 먼저 선택해 주세요.
-      </p>
-
-    </section>
-
-
-    <!-- MAIN -->
-    <div class="main-grid">
-
-      <!-- LEFT -->
-      <div>
-
-        <!-- 01 -->
-        <section class="section">
-
-          <div class="section-head">
-            <div class="section-num">01</div>
-            <div class="section-title">입문 · 출문 선택</div>
-          </div>
-
-          <div class="mode-grid">
-
-            <button
-              class="mode-btn active"
-              data-mode="입문">
-              입문
-            </button>
-
-            <button
-              class="mode-btn"
-              data-mode="출문">
-              출문
-            </button>
-
-          </div>
-
-        </section>
-
-
-        <!-- 02 -->
-        <section class="section">
-
-          <div class="section-head">
-            <div class="section-num">02</div>
-            <div class="section-title">지역</div>
-          </div>
-
-          <div class="region-grid">
-
-            <button
-              class="region-btn active"
-              data-region="청주">
-              청주
-            </button>
-
-            <button
-              class="region-btn"
-              data-region="이천">
-              이천
-            </button>
-
-            <button
-              class="region-btn"
-              data-region="용인">
-              용인
-            </button>
-
-          </div>
-
-        </section>
-
-
-        <!-- 03 -->
-        <section class="section">
-
-          <div class="section-head">
-            <div class="section-num">03</div>
-            <div class="section-title">인원</div>
-          </div>
-
-          <div class="people-toolbar">
-
-            <div class="multi-text">
-              여러 명 선택 가능
-            </div>
-
-            <div class="people-right">
-
-              <div
-                id="count"
-                class="count-pill">
-                0명
-              </div>
-
-              <button
-                id="clearPeople"
-                class="clear-btn">
-                선택 해제
-              </button>
-
-            </div>
-
-          </div>
-
-          <div
-            id="peopleGrid"
-            class="people-grid">
-          </div>
-
-        </section>
-
-
-        <!-- 04 -->
-        <section class="section">
-
-          <div class="section-head">
-            <div class="section-num">04</div>
-            <div class="section-title">안전 · 보안 및 특이사항</div>
-          </div>
-
-
-          <div
-            id="safetyCard"
-            class="check-card">
-
-            <div class="check-box">
-              ✓
-            </div>
-
-            <div>
-              <div class="check-main">
-                안전 체크 완료
-              </div>
-
-              <div class="check-desc">
-                건강상태와 보호구 지침 여부 등을 확인하셨나요?
-              </div>
-            </div>
-
-          </div>
-
-
-          <div
-            id="securityCard"
-            class="check-card">
-
-            <div class="check-box">
-              ✓
-            </div>
-
-            <div>
-              <div class="check-main">
-                보안 체크 완료
-              </div>
-
-              <div class="check-desc">
-                휴대폰 보안씰, 문서, 지급공구, 노트북 및
-                통신 전자제품 등을 확인하셨나요?
-              </div>
-            </div>
-
-          </div>
-
-
-          <div class="check-guide">
-            완료한 항목을 눌러 주세요.
-            미선택 항목은 '미완료'로 표시됩니다.
-          </div>
-
-        </section>
-
-
-        <!-- 특이사항 -->
-        <section class="section">
-
-          <div class="section-head">
-            <div class="section-title">
-              특이사항
-            </div>
-          </div>
-
-          <div class="special-grid">
-
-            <button
-              class="special-btn"
-              data-special="없음">
-              없음
-            </button>
-
-            <button
-              class="special-btn"
-              data-special="있음">
-              있음
-            </button>
-
-          </div>
-
-
-          <div
-            id="specialTextWrap"
-            class="special-text-wrap">
-
-            <textarea
-              id="specialText"
-              class="special-text"
-              placeholder="특이사항을 입력해 주세요."></textarea>
-
-          </div>
-
-        </section>
-
-      </div>
-
-
-      <!-- RIGHT MESSAGE -->
-      <aside class="message-panel">
-
-        <div class="message-head">
-
-          <div class="message-title-row">
-            <div class="section-num">05</div>
-            <div class="section-title">메시지</div>
-          </div>
-
-          <div
-            id="statusBadge"
-            class="message-status">
-            작성 전
-          </div>
-
+  <div class="page">
+    <div class="wrap">
+
+      <header class="topbar">
+        <div class="brand">
+          <div class="brand-asm">ASM</div>
+          <div class="brand-sub">FIELD TOOLS</div>
         </div>
 
+        <div class="clock-wrap">
+          <div class="clock-label">한국 시간</div>
+          <div id="clock">--:--</div>
+        </div>
+      </header>
 
-        <div
-          id="instruction"
-          class="instruction">
-          인원을 선택해 주세요.
+      <section class="hero">
+        <div class="eyebrow">ENTRY / EXIT</div>
+        <h1>입문·출문 메시지</h1>
+        <p>입문인지 출문인지 먼저 선택해 주세요.</p>
+      </section>
+
+      <!-- 01: 처음에는 이것만 표시 -->
+      <section class="section" id="modeSection">
+        <div class="section-head">
+          <span class="section-no">01</span>
+          <span class="section-title">입문 · 출문 선택</span>
         </div>
 
+        <div class="mode-grid">
+          <button class="mode-btn" data-mode="입문">입문</button>
+          <button class="mode-btn" data-mode="출문">출문</button>
+        </div>
+      </section>
 
-        <button
-          id="generateBtn"
-          class="generate-btn"
-          disabled>
-          메시지 생성
-        </button>
+      <!-- 입문/출문 선택 후 표시 -->
+      <div id="workflow">
+        <div class="content-grid">
 
+          <div class="left-column">
+            <!-- 02 -->
+            <section class="section">
+              <div class="section-head">
+                <span class="section-no">02</span>
+                <span class="section-title">지역</span>
+              </div>
 
-        <div class="preview-box">
+              <div class="region-grid">
+                <button class="region-btn active" data-region="청주">청주</button>
+                <button class="region-btn" data-region="이천">이천</button>
+                <button class="region-btn" data-region="용인">용인</button>
+              </div>
+            </section>
 
-          <div class="preview-label">
-            SK hynix · 입문 안내
+            <!-- 03 -->
+            <section class="section">
+              <div class="section-head">
+                <span class="section-no">03</span>
+                <span class="section-title">인원</span>
+              </div>
+
+              <div class="people-toolbar">
+                <span class="people-hint">여러 명 선택 가능</span>
+
+                <div class="people-tools">
+                  <span id="count" class="count-pill">0명</span>
+                  <button id="clearPeople" class="clear-btn">선택 해제</button>
+                </div>
+              </div>
+
+              <div id="peopleGrid" class="people-grid"></div>
+            </section>
+
+            <!-- 04 -->
+            <section class="section">
+              <div class="section-head">
+                <span class="section-no">04</span>
+                <span class="section-title">안전 · 보안 및 특이사항</span>
+              </div>
+
+              <div id="safetyCard" class="check-card">
+                <div class="check-square">✓</div>
+                <div>
+                  <div class="check-name">안전 체크 완료</div>
+                  <div class="check-desc">
+                    건강상태와 보호구 지침 여부 등을 확인하셨나요?
+                  </div>
+                </div>
+              </div>
+
+              <div id="securityCard" class="check-card">
+                <div class="check-square">✓</div>
+                <div>
+                  <div class="check-name">보안 체크 완료</div>
+                  <div class="check-desc">
+                    휴대폰 보안씰, 문서, 지급공구, 노트북 및 통신 전자제품 등을 확인하셨나요?
+                  </div>
+                </div>
+              </div>
+
+              <div class="check-guide">
+                완료한 항목을 눌러 주세요. 미선택 항목은 '미완료'로 표시됩니다.
+              </div>
+
+              <div style="height: 30px"></div>
+
+              <div class="section-head">
+                <span class="section-title">특이사항</span>
+              </div>
+
+              <div class="special-grid">
+                <button class="special-btn active" data-special="없음">없음</button>
+                <button class="special-btn" data-special="있음">있음</button>
+              </div>
+
+              <div id="specialTextWrap" class="special-text-wrap">
+                <textarea id="specialText" class="special-text"
+                  placeholder="특이사항을 입력해 주세요."></textarea>
+              </div>
+            </section>
           </div>
 
-          <div
-            id="preview"
-            class="preview-content preview-placeholder">인원을 선택하고 위 버튼을 누르면
+          <!-- 05 -->
+          <aside class="message-panel">
+            <div class="message-head">
+              <div class="message-head-left">
+                <span class="section-no">05</span>
+                <span class="section-title">메시지</span>
+              </div>
+              <span id="statusBadge" class="status">작성 전</span>
+            </div>
+
+            <div id="instruction" class="instruction">
+              인원을 선택해 주세요.
+            </div>
+
+            <button id="generateBtn" class="generate-btn" disabled>
+              메시지 생성
+            </button>
+
+            <div class="preview-box">
+              <div id="previewLabel" class="preview-label">
+                SK hynix · 입문 안내
+              </div>
+
+              <div id="preview" class="placeholder">
+인원을 선택하고 위 버튼을 누르면
 입문·출문 메시지가 여기에 표시됩니다.</div>
 
-          <div class="preview-foot">
-            생성 버튼을 누른 시간이 입력됩니다.
-          </div>
+              <div class="preview-foot">
+                한국 시간 기준 · 다시 생성하면 현재 시간으로 갱신됩니다.
+              </div>
+            </div>
+
+            <button id="copyBtn" class="copy-btn" disabled>
+              메시지 복사
+            </button>
+
+            <button id="kakaoBtn" class="kakao-btn" disabled>
+              카카오톡 공유하기
+            </button>
+
+            <div class="message-help">
+              체크 상태와 특이사항을 확인해 주세요.<br />
+              카카오톡 공유는 JavaScript 키 설정 후 친구/채팅방 선택 화면이 열립니다.
+            </div>
+          </aside>
 
         </div>
+      </div>
 
-
-        <button
-          id="copyBtn"
-          class="copy-btn"
-          disabled>
-          메시지 복사
-        </button>
-
-
-        <button
-          id="shareBtn"
-          class="kakao-share-btn"
-          disabled>
-          카카오톡 공유하기
-        </button>
-
-
-        <div class="message-help">
-          체크 상태와 특이사항을 확인해 주세요.<br>
-          복사한 메시지는 카카오톡 등에 붙여넣으면 됩니다.
-        </div>
-
-      </aside>
-
+      <footer class="footer">
+        ASM&nbsp;&nbsp; 입문·출문 메시지 도우미
+      </footer>
     </div>
-
   </div>
-</div>
 
+  <div id="toast" class="toast"></div>
 
-<div
-  id="toast"
-  class="toast">
-</div>
+  <script>
+    /* =====================================================
+       카카오톡 직접 공유 설정
+       -----------------------------------------------------
+       아래 "" 안에 Kakao Developers의 "JavaScript 키"를 넣으세요.
+       예: const KAKAO_JAVASCRIPT_KEY = "abc123...";
+       ===================================================== */
+    const KAKAO_JAVASCRIPT_KEY = "";
 
+    const people = [
+      "엄재호", "오승준", "김민서",
+      "김택", "박동준", "배성철",
+      "서지수", "송영민", "송유진",
+      "이중경", "정예지", "정희석",
+      "홍성민", "남대웅", "서동현",
+      "김재원", "남상혁", "김성준",
+      "김민석", "민상은", "이덕재"
+    ];
 
-<script>
+    let selectedMode = null;
+    let selectedRegion = "청주";
+    let selectedPeople = [];
+    let safetyChecked = false;
+    let securityChecked = false;
+    let specialState = "없음";
+    let generatedMessage = "";
 
-  /* =========================
-     DATA
-  ========================= */
+    const workflow = document.getElementById("workflow");
+    const peopleGrid = document.getElementById("peopleGrid");
+    const count = document.getElementById("count");
+    const safetyCard = document.getElementById("safetyCard");
+    const securityCard = document.getElementById("securityCard");
+    const specialTextWrap = document.getElementById("specialTextWrap");
+    const specialText = document.getElementById("specialText");
+    const instruction = document.getElementById("instruction");
+    const generateBtn = document.getElementById("generateBtn");
+    const preview = document.getElementById("preview");
+    const previewLabel = document.getElementById("previewLabel");
+    const statusBadge = document.getElementById("statusBadge");
+    const copyBtn = document.getElementById("copyBtn");
+    const kakaoBtn = document.getElementById("kakaoBtn");
+    const toast = document.getElementById("toast");
 
-  const people = [
-    "엄재호",
-    "오승준",
-    "김민서",
+    function koreaParts() {
+      const parts = new Intl.DateTimeFormat("en-CA", {
+        timeZone: "Asia/Seoul",
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: false
+      }).formatToParts(new Date());
 
-    "김택",
-    "박동준",
-    "배성철",
+      const o = {};
+      parts.forEach(p => o[p.type] = p.value);
+      return o;
+    }
 
-    "서지수",
-    "송영민",
-    "송유진",
+    function updateClock() {
+      const t = koreaParts();
+      document.getElementById("clock").textContent = `${t.hour}:${t.minute}`;
+    }
 
-    "이중경",
-    "정예지",
-    "정희석",
+    updateClock();
+    setInterval(updateClock, 1000);
 
-    "홍성민",
-    "남대웅",
-    "서동현",
+    function renderPeople() {
+      peopleGrid.innerHTML = "";
 
-    "김재원",
-    "남상혁",
-    "김성준",
+      people.forEach(name => {
+        const btn = document.createElement("button");
+        btn.className = "person-btn";
+        btn.textContent = name;
 
-    "김민석",
-    "민상은",
-    "이덕재"
-  ];
-
-
-  /* =========================
-     STATE
-  ========================= */
-
-  let selectedMode = "입문";
-  let selectedRegion = "청주";
-
-  let selectedPeople = [];
-
-  let safetyChecked = false;
-  let securityChecked = false;
-
-  let specialState = null;
-
-  let generatedMessage = "";
-
-
-  /* =========================
-     ELEMENTS
-  ========================= */
-
-  const peopleGrid =
-    document.getElementById("peopleGrid");
-
-  const count =
-    document.getElementById("count");
-
-  const safetyCard =
-    document.getElementById("safetyCard");
-
-  const securityCard =
-    document.getElementById("securityCard");
-
-  const specialTextWrap =
-    document.getElementById("specialTextWrap");
-
-  const specialText =
-    document.getElementById("specialText");
-
-  const generateBtn =
-    document.getElementById("generateBtn");
-
-  const copyBtn =
-    document.getElementById("copyBtn");
-
-
-  const shareBtn =
-    document.getElementById("shareBtn");
-
-  const preview =
-    document.getElementById("preview");
-
-  const statusBadge =
-    document.getElementById("statusBadge");
-
-  const instruction =
-    document.getElementById("instruction");
-
-  const toast =
-    document.getElementById("toast");
-
-
-  /* =========================
-     CLOCK
-  ========================= */
-
-  function getKoreaTime() {
-
-    const parts =
-      new Intl.DateTimeFormat(
-        "en-GB",
-        {
-          timeZone: "Asia/Seoul",
-          year: "numeric",
-          month: "2-digit",
-          day: "2-digit",
-          hour: "2-digit",
-          minute: "2-digit",
-          second: "2-digit",
-          hour12: false
+        if (selectedPeople.includes(name)) {
+          btn.classList.add("selected");
         }
-      ).formatToParts(new Date());
 
+        btn.addEventListener("click", () => {
+          if (selectedPeople.includes(name)) {
+            selectedPeople = selectedPeople.filter(v => v !== name);
+          } else {
+            selectedPeople.push(name);
+          }
 
-    const obj = {};
+          renderPeople();
+          resetGenerated();
+        });
 
-    parts.forEach(part => {
-      obj[part.type] = part.value;
-    });
+        peopleGrid.appendChild(btn);
+      });
 
-    return obj;
-  }
+      count.textContent = `${selectedPeople.length}명`;
+      updateGenerateState();
+    }
 
+    renderPeople();
 
-  function updateClock() {
-
-    const t = getKoreaTime();
-
-    document.getElementById("clock")
-      .textContent =
-      `${t.hour}:${t.minute}`;
-
-  }
-
-
-  updateClock();
-
-  setInterval(
-    updateClock,
-    1000
-  );
-
-
-  /* =========================
-     MODE
-  ========================= */
-
-  document
-    .querySelectorAll(".mode-btn")
-    .forEach(btn => {
-
-      btn.onclick = () => {
-
-        document
-          .querySelectorAll(".mode-btn")
-          .forEach(x =>
-            x.classList.remove("active")
-          );
-
+    /* 01 입문/출문: 처음 선택해야 나머지가 보임 */
+    document.querySelectorAll(".mode-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".mode-btn").forEach(x => x.classList.remove("active"));
         btn.classList.add("active");
 
-        selectedMode =
-          btn.dataset.mode;
+        selectedMode = btn.dataset.mode;
+        previewLabel.textContent = `SK hynix · ${selectedMode} 안내`;
 
+        workflow.classList.add("show");
         resetGenerated();
-
-      };
-
+      });
     });
 
-
-  /* =========================
-     REGION
-  ========================= */
-
-  document
-    .querySelectorAll(".region-btn")
-    .forEach(btn => {
-
-      btn.onclick = () => {
-
-        document
-          .querySelectorAll(".region-btn")
-          .forEach(x =>
-            x.classList.remove("active")
-          );
-
+    document.querySelectorAll(".region-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".region-btn").forEach(x => x.classList.remove("active"));
         btn.classList.add("active");
-
-        selectedRegion =
-          btn.dataset.region;
-
+        selectedRegion = btn.dataset.region;
         resetGenerated();
-
-      };
-
+      });
     });
 
+    document.getElementById("clearPeople").addEventListener("click", () => {
+      selectedPeople = [];
+      renderPeople();
+      resetGenerated();
+    });
 
-  /* =========================
-     PEOPLE
-  ========================= */
+    safetyCard.addEventListener("click", () => {
+      safetyChecked = !safetyChecked;
+      safetyCard.classList.toggle("checked", safetyChecked);
+      resetGenerated();
+    });
 
-  function renderPeople() {
+    securityCard.addEventListener("click", () => {
+      securityChecked = !securityChecked;
+      securityCard.classList.toggle("checked", securityChecked);
+      resetGenerated();
+    });
 
-    peopleGrid.innerHTML = "";
+    document.querySelectorAll(".special-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".special-btn").forEach(x => x.classList.remove("active"));
+        btn.classList.add("active");
+        specialState = btn.dataset.special;
 
+        if (specialState === "있음") {
+          specialTextWrap.classList.add("show");
+        } else {
+          specialTextWrap.classList.remove("show");
+          specialText.value = "";
+        }
 
-    people.forEach(name => {
+        resetGenerated();
+      });
+    });
 
-      const btn =
-        document.createElement("button");
+    specialText.addEventListener("input", resetGenerated);
 
-      btn.className =
-        "person-btn";
+    function updateGenerateState() {
+      let ready = true;
 
-      btn.textContent =
-        name;
-
-
-      if(
-        selectedPeople.includes(name)
-      ) {
-
-        btn.classList.add(
-          "selected"
-        );
-
+      if (!selectedMode) {
+        ready = false;
+        instruction.textContent = "입문 또는 출문을 먼저 선택해 주세요.";
+      } else if (selectedPeople.length === 0) {
+        ready = false;
+        instruction.textContent = "인원을 선택해 주세요.";
+      } else if (!safetyChecked || !securityChecked) {
+        ready = false;
+        instruction.textContent = "안전·보안 체크를 완료해 주세요.";
+      } else if (specialState === "있음" && !specialText.value.trim()) {
+        ready = false;
+        instruction.textContent = "특이사항 내용을 입력해 주세요.";
+      } else {
+        instruction.textContent = "선택한 내용으로 메시지를 생성할 수 있습니다.";
       }
 
-
-      btn.onclick = () => {
-
-        if(
-          selectedPeople.includes(name)
-        ) {
-
-          selectedPeople =
-            selectedPeople.filter(
-              x => x !== name
-            );
-
-        }
-
-        else {
-
-          selectedPeople.push(name);
-
-        }
-
-
-        renderPeople();
-
-        resetGenerated();
-
-      };
-
-
-      peopleGrid.appendChild(btn);
-
-    });
-
-
-    count.textContent =
-      `${selectedPeople.length}명`;
-
-
-    updateGenerateState();
-
-  }
-
-
-  renderPeople();
-
-
-  document
-    .getElementById("clearPeople")
-    .onclick = () => {
-
-      selectedPeople = [];
-
-      renderPeople();
-
-      resetGenerated();
-
-    };
-
-
-  /* =========================
-     CHECK
-  ========================= */
-
-  safetyCard.onclick = () => {
-
-    safetyChecked =
-      !safetyChecked;
-
-    safetyCard.classList
-      .toggle(
-        "checked",
-        safetyChecked
-      );
-
-    resetGenerated();
-
-  };
-
-
-  securityCard.onclick = () => {
-
-    securityChecked =
-      !securityChecked;
-
-    securityCard.classList
-      .toggle(
-        "checked",
-        securityChecked
-      );
-
-    resetGenerated();
-
-  };
-
-
-  /* =========================
-     SPECIAL
-  ========================= */
-
-  document
-    .querySelectorAll(".special-btn")
-    .forEach(btn => {
-
-      btn.onclick = () => {
-
-        document
-          .querySelectorAll(".special-btn")
-          .forEach(x =>
-            x.classList.remove("active")
-          );
-
-        btn.classList.add("active");
-
-        specialState =
-          btn.dataset.special;
-
-
-        if(
-          specialState === "있음"
-        ) {
-
-          specialTextWrap
-            .classList.add("show");
-
-        }
-
-        else {
-
-          specialTextWrap
-            .classList.remove("show");
-
-          specialText.value = "";
-
-        }
-
-        resetGenerated();
-
-      };
-
-    });
-
-
-  specialText.addEventListener(
-    "input",
-    resetGenerated
-  );
-
-
-  /* =========================
-     BUTTON STATE
-  ========================= */
-
-  function updateGenerateState() {
-
-    let ready = true;
-
-
-    if(
-      selectedPeople.length === 0
-    ) {
-
-      ready = false;
-
-      instruction.textContent =
-        "인원을 선택해 주세요.";
-
+      generateBtn.disabled = !ready;
+      generateBtn.classList.toggle("ready", ready);
     }
 
-    else if(
-      !safetyChecked ||
-      !securityChecked
-    ) {
+    function resetGenerated() {
+      generatedMessage = "";
+      statusBadge.textContent = "작성 전";
 
-      ready = false;
-
-      instruction.textContent =
-        "안전·보안 체크를 완료해 주세요.";
-
-    }
-
-    else if(
-      !specialState
-    ) {
-
-      ready = false;
-
-      instruction.textContent =
-        "특이사항 여부를 선택해 주세요.";
-
-    }
-
-    else if(
-      specialState === "있음" &&
-      !specialText.value.trim()
-    ) {
-
-      ready = false;
-
-      instruction.textContent =
-        "특이사항 내용을 입력해 주세요.";
-
-    }
-
-    else {
-
-      instruction.textContent =
-        "선택 내용을 확인한 뒤 메시지를 생성하세요.";
-
-    }
-
-
-    generateBtn.disabled =
-      !ready;
-
-    generateBtn.classList
-      .toggle(
-        "ready",
-        ready
-      );
-
-  }
-
-
-  /* =========================
-     RESET
-  ========================= */
-
-  function resetGenerated() {
-
-    generatedMessage = "";
-
-    statusBadge.textContent =
-      "작성 전";
-
-    preview.classList.add(
-      "preview-placeholder"
-    );
-
-    preview.textContent =
+      preview.classList.add("placeholder");
+      preview.textContent =
 `인원을 선택하고 위 버튼을 누르면
 입문·출문 메시지가 여기에 표시됩니다.`;
 
-    copyBtn.disabled = true;
-
-    copyBtn.classList.remove(
-      "enabled"
-    );
-
-    shareBtn.disabled = true;
-
-    updateGenerateState();
-
-  }
-
-
-  /* =========================
-     GENERATE
-  ========================= */
-
-  generateBtn.onclick = () => {
-
-    if(generateBtn.disabled) {
-      return;
+      copyBtn.disabled = true;
+      kakaoBtn.disabled = true;
+      updateGenerateState();
     }
 
+    generateBtn.addEventListener("click", () => {
+      if (generateBtn.disabled) return;
 
-    const t =
-      getKoreaTime();
+      const t = koreaParts();
+      const stamp = `${t.year}.${t.month}.${t.day} ${t.hour}:${t.minute}`;
+      const names = selectedPeople.join(", ");
+      const special =
+        specialState === "없음"
+          ? "없음"
+          : specialText.value.trim();
 
-
-    const date =
-      `${t.year}.${t.month}.${t.day}`;
-
-    const time =
-      `${t.hour}:${t.minute}`;
-
-
-    const names =
-      selectedPeople.join(", ");
-
-
-    const special =
-      specialState === "없음"
-        ? "없음"
-        : specialText.value.trim();
-
-
-    generatedMessage =
+      generatedMessage =
 `[SK hynix ${selectedRegion} ${selectedMode}]
-${date} ${time}
+${stamp}
 
 ${selectedMode} 인원: ${names} (총 ${selectedPeople.length}명)
 안전 체크: ${safetyChecked ? "완료" : "미완료"}
 보안 체크: ${securityChecked ? "완료" : "미완료"}
 특이사항: ${special}`;
 
+      preview.classList.remove("placeholder");
+      preview.textContent = generatedMessage;
+      statusBadge.textContent = "생성 완료";
+      copyBtn.disabled = false;
+      kakaoBtn.disabled = false;
 
-    preview.textContent =
-      generatedMessage;
+      showToast("메시지가 생성되었습니다.");
+    });
 
-    preview.classList.remove(
-      "preview-placeholder"
-    );
-
-
-    statusBadge.textContent =
-      "작성 완료";
-
-
-    copyBtn.disabled =
-      false;
-
-    copyBtn.classList.add(
-      "enabled"
-    );
-
-    shareBtn.disabled = false;
-
-
-    showToast(
-      "메시지가 생성되었습니다."
-    );
-
-  };
-
-
-  /* =========================
-     COPY
-  ========================= */
-
-  copyBtn.onclick = async () => {
-
-    if(
-      !generatedMessage
-    ) {
-      return;
-    }
-
-
-    try {
-
-      await navigator.clipboard
-        .writeText(
-          generatedMessage
-        );
-
-    }
-
-    catch {
-
-      const textarea =
-        document.createElement(
-          "textarea"
-        );
-
-      textarea.value =
-        generatedMessage;
-
-      textarea.style.position =
-        "fixed";
-
-      textarea.style.opacity =
-        "0";
-
-
-      document.body.appendChild(
-        textarea
-      );
-
-      textarea.select();
-
-      document.execCommand(
-        "copy"
-      );
-
-      textarea.remove();
-
-    }
-
-
-    showToast(
-      "메시지를 복사했습니다."
-    );
-
-  };
-
-
-
-  /* =========================
-     SHARE
-  ========================= */
-
-  shareBtn.onclick = async () => {
-
-    if(!generatedMessage) {
-      return;
-    }
-
-    if(navigator.share) {
+    async function copyMessage() {
+      if (!generatedMessage) return false;
 
       try {
-
-        await navigator.share({
-          title: "ASM 입문·출문 메시지",
-          text: generatedMessage
-        });
-
-      } catch(error) {
-
-        // 사용자가 공유창을 닫은 경우는 별도 처리하지 않음
-        if(error && error.name !== "AbortError") {
-          showToast("공유를 실행하지 못했습니다.");
+        await navigator.clipboard.writeText(generatedMessage);
+        return true;
+      } catch (e) {
+        try {
+          const ta = document.createElement("textarea");
+          ta.value = generatedMessage;
+          ta.style.position = "fixed";
+          ta.style.opacity = "0";
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand("copy");
+          ta.remove();
+          return true;
+        } catch (e2) {
+          return false;
         }
-
       }
-
-    } else {
-
-      try {
-
-        await navigator.clipboard.writeText(
-          generatedMessage
-        );
-
-        showToast(
-          "메시지를 복사했습니다. 카카오톡에 붙여넣어 주세요."
-        );
-
-      } catch {
-
-        const textarea =
-          document.createElement("textarea");
-
-        textarea.value =
-          generatedMessage;
-
-        textarea.style.position =
-          "fixed";
-
-        textarea.style.opacity =
-          "0";
-
-        document.body.appendChild(
-          textarea
-        );
-
-        textarea.select();
-
-        document.execCommand(
-          "copy"
-        );
-
-        textarea.remove();
-
-        showToast(
-          "메시지를 복사했습니다. 카카오톡에 붙여넣어 주세요."
-        );
-
-      }
-
     }
 
-  };
+    copyBtn.addEventListener("click", async () => {
+      const ok = await copyMessage();
+      showToast(ok ? "메시지를 복사했습니다." : "복사하지 못했습니다.");
+    });
 
+    /* ===== Kakao SDK 초기화 ===== */
+    function initKakao() {
+      if (!KAKAO_JAVASCRIPT_KEY) return false;
+      if (typeof Kakao === "undefined") return false;
 
-  /* =========================
-     TOAST
-  ========================= */
+      try {
+        if (!Kakao.isInitialized()) {
+          Kakao.init(KAKAO_JAVASCRIPT_KEY);
+        }
+        return Kakao.isInitialized();
+      } catch (e) {
+        console.error(e);
+        return false;
+      }
+    }
 
-  let toastTimer;
+    /* ===== 카카오톡 친구/채팅방 선택 팝업 ===== */
+    kakaoBtn.addEventListener("click", async () => {
+      if (!generatedMessage) return;
 
+      if (initKakao()) {
+        try {
+          Kakao.Share.sendDefault({
+            objectType: "text",
+            text: generatedMessage,
+            link: {
+              mobileWebUrl: window.location.href,
+              webUrl: window.location.href
+            }
+          });
+          return;
+        } catch (e) {
+          console.error(e);
+        }
+      }
 
-  function showToast(text) {
+      /* 키가 아직 없거나 SDK 오류일 때: 공유창 → 복사 순서로 fallback */
+      if (navigator.share) {
+        try {
+          await navigator.share({
+            title: "ASM 입문·출문 메시지",
+            text: generatedMessage
+          });
+          return;
+        } catch (e) {
+          if (e && e.name === "AbortError") return;
+        }
+      }
 
-    clearTimeout(
-      toastTimer
-    );
+      const ok = await copyMessage();
 
-    toast.textContent =
-      text;
-
-    toast.classList.add(
-      "show"
-    );
-
-
-    toastTimer =
-      setTimeout(() => {
-
-        toast.classList.remove(
-          "show"
+      if (!KAKAO_JAVASCRIPT_KEY) {
+        showToast(
+          ok
+            ? "카카오 JavaScript 키가 필요합니다. 메시지는 복사했습니다."
+            : "카카오 JavaScript 키 설정이 필요합니다."
         );
+      } else {
+        showToast(
+          ok
+            ? "카카오 공유 실패. 메시지는 복사했습니다."
+            : "카카오 공유를 실행하지 못했습니다."
+        );
+      }
+    });
 
-      }, 1600);
+    let toastTimer;
+    function showToast(message) {
+      clearTimeout(toastTimer);
+      toast.textContent = message;
+      toast.classList.add("show");
 
-  }
+      toastTimer = setTimeout(() => {
+        toast.classList.remove("show");
+      }, 2300);
+    }
 
-
-  updateGenerateState();
-
-</script>
-
+    updateGenerateState();
+  </script>
 </body>
 </html>
