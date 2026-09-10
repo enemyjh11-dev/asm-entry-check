@@ -1,130 +1,9 @@
 from pathlib import Path
 
-src = Path("/mnt/data/붙여넣은 텍스트 (1).txt")
-text = src.read_text(encoding="utf-8")
+path = Path("/mnt/data/index.html")
+text = path.read_text(encoding="utf-8")
 
-old_css = """    .preview-box {
-      position: relative;
-      min-height: 385px;
-      background: #f5f7fa;
-      border: 1px solid #d5dfeb;
-      border-radius: 10px;
-      padding: 21px 20px 42px;
-      color: #617693;
-      font-size: 13px;
-      line-height: 1.85;
-      white-space: pre-wrap;
-    }
-
-    .preview-label {
-      color: #285da4;
-      font-size: 10px;
-      font-weight: 800;
-      margin-bottom: 18px;
-    }
-
-    .preview-content {
-      white-space: pre-wrap;
-      word-break: keep-all;
-    }
-"""
-
-new_css = """    .preview-box {
-      position: relative;
-      min-height: 285px;
-      background: #f5f7fa;
-      border: 1px solid #d5dfeb;
-      border-radius: 10px;
-      padding: 18px 20px 40px;
-      color: #4f6584;
-      font-size: 15px;
-      line-height: 1.5;
-      white-space: pre-wrap;
-    }
-
-    .preview-label {
-      color: #285da4;
-      font-size: 12px;
-      font-weight: 900;
-      margin-bottom: 12px;
-    }
-
-    .preview-content {
-      white-space: pre-wrap;
-      word-break: keep-all;
-      font-weight: 600;
-    }
-"""
-
-if old_css not in text:
-    raise RuntimeError("미리보기 CSS 블록을 찾지 못했습니다.")
-text = text.replace(old_css, new_css, 1)
-
-old_foot = """    .preview-foot {
-      position: absolute;
-      left: 20px;
-      right: 20px;
-      bottom: 14px;
-      border-top: 1px dashed #d1dae6;
-      padding-top: 10px;
-      font-size: 10px;
-      color: #7186a3;
-    }
-"""
-new_foot = """    .preview-foot {
-      position: absolute;
-      left: 20px;
-      right: 20px;
-      bottom: 12px;
-      border-top: 1px dashed #d1dae6;
-      padding-top: 8px;
-      font-size: 11px;
-      color: #7186a3;
-    }
-"""
-text = text.replace(old_foot, new_foot, 1)
-
-text = text.replace(
-"""      .preview-box {
-        min-height: 300px;
-      }
-""",
-"""      .preview-box {
-        min-height: 250px;
-      }
-""",
-1
-)
-
-old_time = """    const time =
-      `${t.hour}:${t.minute}`;
-
-
-    const names =
-"""
-new_time = """    const date =
-      `${t.year}.${t.month}.${t.day}`;
-
-    const time =
-      `${t.hour}:${t.minute}`;
-
-
-    const names =
-"""
-if old_time not in text:
-    raise RuntimeError("시간 생성 블록을 찾지 못했습니다.")
-text = text.replace(old_time, new_time, 1)
-
-old_msg = """    generatedMessage =
-`[${selectedRegion} ${selectedMode}]
-시간 : ${time}
-인원 : ${names}
-
-안전 체크 : ${safetyChecked ? "완료" : "미완료"}
-보안 체크 : ${securityChecked ? "완료" : "미완료"}
-특이사항 : ${special}`;
-"""
-new_msg = """    generatedMessage =
+old = """    generatedMessage =
 `[${selectedRegion} ${selectedMode}]
 날짜 : ${date}
 시간 : ${time}
@@ -133,10 +12,21 @@ new_msg = """    generatedMessage =
 보안 체크 : ${securityChecked ? "완료" : "미완료"}
 특이사항 : ${special}`;
 """
-if old_msg not in text:
-    raise RuntimeError("메시지 생성 블록을 찾지 못했습니다.")
-text = text.replace(old_msg, new_msg, 1)
 
-out = Path("/mnt/data/index.html")
-out.write_text(text, encoding="utf-8")
-print(f"수정 완료: {out}")
+new = """    generatedMessage =
+`[SK hynix ${selectedRegion} ${selectedMode}]
+${date} ${time}
+
+${selectedMode} 인원: ${names} (총 ${selectedPeople.length}명)
+안전 체크: ${safetyChecked ? "완료" : "미완료"}
+보안 체크: ${securityChecked ? "완료" : "미완료"}
+특이사항: ${special}`;
+"""
+
+if old not in text:
+    raise RuntimeError("기존 메시지 생성 블록을 찾지 못했습니다.")
+
+text = text.replace(old, new, 1)
+
+path.write_text(text, encoding="utf-8")
+print("수정 완료: /mnt/data/index.html")
