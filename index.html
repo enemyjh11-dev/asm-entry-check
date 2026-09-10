@@ -538,6 +538,23 @@
       border-color: #aebfd4;
     }
 
+    .kakao-share-btn {
+      width: 100%;
+      height: 47px;
+      margin-top: 9px;
+      border: 0;
+      border-radius: 9px;
+      background: #FEE500;
+      color: #191919;
+      font-size: 14px;
+      font-weight: 900;
+    }
+
+    .kakao-share-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
     .message-help {
       text-align: center;
       padding-top: 23px;
@@ -946,6 +963,14 @@
         </button>
 
 
+        <button
+          id="shareBtn"
+          class="kakao-share-btn"
+          disabled>
+          카카오톡 공유하기
+        </button>
+
+
         <div class="message-help">
           체크 상태와 특이사항을 확인해 주세요.<br>
           복사한 메시지는 카카오톡 등에 붙여넣으면 됩니다.
@@ -1046,6 +1071,10 @@
 
   const copyBtn =
     document.getElementById("copyBtn");
+
+
+  const shareBtn =
+    document.getElementById("shareBtn");
 
   const preview =
     document.getElementById("preview");
@@ -1445,6 +1474,8 @@
       "enabled"
     );
 
+    shareBtn.disabled = true;
+
     updateGenerateState();
 
   }
@@ -1511,6 +1542,8 @@ ${selectedMode} 인원: ${names} (총 ${selectedPeople.length}명)
       "enabled"
     );
 
+    shareBtn.disabled = false;
+
 
     showToast(
       "메시지가 생성되었습니다."
@@ -1576,6 +1609,84 @@ ${selectedMode} 인원: ${names} (총 ${selectedPeople.length}명)
     showToast(
       "메시지를 복사했습니다."
     );
+
+  };
+
+
+
+  /* =========================
+     SHARE
+  ========================= */
+
+  shareBtn.onclick = async () => {
+
+    if(!generatedMessage) {
+      return;
+    }
+
+    if(navigator.share) {
+
+      try {
+
+        await navigator.share({
+          title: "ASM 입문·출문 메시지",
+          text: generatedMessage
+        });
+
+      } catch(error) {
+
+        // 사용자가 공유창을 닫은 경우는 별도 처리하지 않음
+        if(error && error.name !== "AbortError") {
+          showToast("공유를 실행하지 못했습니다.");
+        }
+
+      }
+
+    } else {
+
+      try {
+
+        await navigator.clipboard.writeText(
+          generatedMessage
+        );
+
+        showToast(
+          "메시지를 복사했습니다. 카카오톡에 붙여넣어 주세요."
+        );
+
+      } catch {
+
+        const textarea =
+          document.createElement("textarea");
+
+        textarea.value =
+          generatedMessage;
+
+        textarea.style.position =
+          "fixed";
+
+        textarea.style.opacity =
+          "0";
+
+        document.body.appendChild(
+          textarea
+        );
+
+        textarea.select();
+
+        document.execCommand(
+          "copy"
+        );
+
+        textarea.remove();
+
+        showToast(
+          "메시지를 복사했습니다. 카카오톡에 붙여넣어 주세요."
+        );
+
+      }
+
+    }
 
   };
 
