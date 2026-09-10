@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#111827">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0f172a" />
+
   <title>ASM Entry Check</title>
 
   <style>
@@ -13,282 +14,276 @@
 
     body {
       margin: 0;
-      font-family:
-        -apple-system,
-        BlinkMacSystemFont,
-        "Segoe UI",
-        Pretendard,
-        "Noto Sans KR",
-        Arial,
-        sans-serif;
-      background: #f4f6f8;
-      color: #171717;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+        "Noto Sans KR", Arial, sans-serif;
+      background: #f6f7f9;
+      color: #111827;
     }
 
-    .header {
-      background: #111827;
+    button {
+      font-family: inherit;
+    }
+
+    .top {
+      background: #0f172a;
       color: white;
-      padding: 22px 18px 20px;
+      padding: 22px 18px;
     }
 
-    .header-inner {
-      max-width: 680px;
-      margin: 0 auto;
+    .top-inner {
+      max-width: 650px;
+      margin: auto;
     }
 
-    .brand {
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: 1.5px;
-      opacity: 0.65;
-      margin-bottom: 7px;
-    }
-
-    .title {
-      font-size: 27px;
-      font-weight: 800;
-      margin: 0;
-    }
-
-    .subtitle {
-      margin-top: 5px;
-      font-size: 14px;
-      color: #cbd5e1;
-    }
-
-    .live-time {
-      margin-top: 17px;
-      background: rgba(255,255,255,0.09);
-      border: 1px solid rgba(255,255,255,0.13);
-      border-radius: 12px;
-      padding: 11px 13px;
-    }
-
-    .live-time-label {
+    .small-title {
       font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
       color: #94a3b8;
+    }
+
+    h1 {
+      margin: 5px 0 4px;
+      font-size: 27px;
+      letter-spacing: -1px;
+    }
+
+    .sub {
+      color: #cbd5e1;
+      font-size: 14px;
+    }
+
+    .clock-box {
+      margin-top: 17px;
+      padding: 13px 14px;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+    }
+
+    .clock-label {
+      color: #94a3b8;
+      font-size: 11px;
       margin-bottom: 3px;
     }
 
-    .live-time-value {
-      font-size: 17px;
-      font-weight: 700;
+    #clock {
+      font-size: 18px;
+      font-weight: 800;
       font-variant-numeric: tabular-nums;
     }
 
     .container {
-      max-width: 680px;
-      margin: 0 auto;
-      padding: 16px;
+      max-width: 650px;
+      margin: auto;
+      padding: 15px;
     }
 
     .card {
-      background: white;
+      background: #fff;
+      border: 1px solid #e5e7eb;
       border-radius: 16px;
       padding: 18px;
-      margin-bottom: 14px;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.055);
-      border: 1px solid #e7e9ed;
+      margin-bottom: 13px;
+      box-shadow: 0 2px 10px rgba(0,0,0,.04);
     }
 
-    .section-title {
+    .card-title {
       display: flex;
       align-items: center;
       gap: 9px;
-      margin-bottom: 14px;
-      font-size: 17px;
       font-weight: 800;
+      font-size: 17px;
+      margin-bottom: 14px;
     }
 
-    .number {
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    .num {
       width: 27px;
       height: 27px;
       border-radius: 8px;
-      background: #111827;
+      background: #0f172a;
       color: white;
-      font-size: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
       font-weight: 800;
     }
 
-    .section-desc {
-      margin: -6px 0 14px 36px;
-      font-size: 13px;
+    .description {
+      margin: -5px 0 14px 36px;
       color: #6b7280;
+      font-size: 13px;
     }
 
-    .region-grid {
+    /* 지역 */
+
+    .region-list {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 9px;
     }
 
-    .region-btn {
-      border: 1px solid #d8dde5;
+    .region {
+      height: 48px;
+      border: 1px solid #d1d5db;
+      border-radius: 11px;
       background: white;
-      border-radius: 12px;
-      padding: 14px 6px;
+      color: #374151;
       font-size: 15px;
       font-weight: 700;
       cursor: pointer;
-      color: #374151;
-      transition: 0.15s;
     }
 
-    .region-btn.active {
+    .region.active {
+      background: #0f172a;
+      border-color: #0f172a;
       color: white;
-      background: #111827;
-      border-color: #111827;
     }
 
-    .name-toolbar {
+    /* 이름 */
+
+    .toolbar {
       display: flex;
-      align-items: center;
       justify-content: space-between;
+      align-items: center;
       margin-bottom: 11px;
-      gap: 8px;
     }
 
-    .count {
+    .counter {
       font-size: 13px;
       color: #6b7280;
     }
 
-    .count strong {
+    .counter strong {
       color: #111827;
     }
 
-    .clear-btn {
-      background: #f3f4f6;
-      color: #4b5563;
+    .clear {
       border: 0;
       border-radius: 8px;
       padding: 8px 11px;
-      cursor: pointer;
-      font-size: 12px;
+      background: #f1f3f5;
+      color: #4b5563;
       font-weight: 700;
+      font-size: 12px;
+      cursor: pointer;
     }
 
-    .name-grid {
+    .people {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 8px;
     }
 
-    .name-btn {
-      position: relative;
+    .person {
+      min-height: 44px;
+      border: 1px solid #e0e3e7;
       background: #f8fafc;
-      border: 1px solid #e0e4e9;
       border-radius: 10px;
-      padding: 12px 5px;
+      color: #374151;
       font-size: 14px;
       font-weight: 650;
-      color: #374151;
       cursor: pointer;
-      transition: 0.12s;
-      user-select: none;
+      position: relative;
     }
 
-    .name-btn.active {
-      color: #111827;
+    .person.selected {
       background: #e5e7eb;
-      border-color: #111827;
-      box-shadow: inset 0 0 0 1px #111827;
+      color: #111827;
+      border: 2px solid #111827;
     }
 
-    .name-btn.active::after {
+    .person.selected::after {
       content: "✓";
       position: absolute;
-      top: 3px;
-      right: 6px;
+      top: 2px;
+      right: 5px;
       font-size: 10px;
       font-weight: 900;
     }
 
+    /* 메시지 */
+
     .preview {
-      background: #f7f8fa;
-      border: 1px solid #e1e5ea;
-      border-radius: 12px;
-      min-height: 125px;
+      min-height: 130px;
       padding: 16px;
-      white-space: pre-wrap;
-      word-break: keep-all;
-      font-size: 15px;
-      line-height: 1.65;
+      background: #f8f9fb;
+      border: 1px solid #e1e4e8;
+      border-radius: 12px;
       color: #374151;
+      white-space: pre-wrap;
+      line-height: 1.65;
+      font-size: 15px;
     }
 
-    .preview.empty {
+    .preview.placeholder {
       color: #9ca3af;
     }
 
-    .button-row {
+    .actions {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 9px;
       margin-top: 12px;
     }
 
-    .generate-btn,
-    .copy-btn {
-      border: 0;
+    .generate,
+    .copy {
+      height: 48px;
+      border: none;
       border-radius: 11px;
-      padding: 14px;
       font-size: 15px;
       font-weight: 800;
       cursor: pointer;
     }
 
-    .generate-btn {
-      background: #111827;
+    .generate {
+      background: #0f172a;
       color: white;
     }
 
-    .copy-btn {
+    .copy {
       background: #e5e7eb;
       color: #111827;
     }
 
-    .copy-btn:disabled {
-      opacity: 0.4;
+    .copy:disabled {
+      opacity: .4;
       cursor: default;
     }
 
-    .notice {
-      margin-top: 12px;
+    .warning {
+      margin-top: 11px;
       padding: 11px 12px;
-      border-radius: 10px;
       background: #fff8e8;
-      color: #7c5c13;
+      color: #745612;
+      border-radius: 10px;
       font-size: 12px;
       line-height: 1.5;
     }
 
     .footer {
       text-align: center;
+      padding: 2px 0 25px;
       color: #9ca3af;
       font-size: 11px;
-      padding: 5px 10px 28px;
     }
 
     .toast {
       position: fixed;
       left: 50%;
-      bottom: 28px;
+      bottom: 25px;
       transform: translateX(-50%) translateY(15px);
       background: #111827;
       color: white;
-      font-size: 13px;
+      border-radius: 50px;
       padding: 11px 17px;
-      border-radius: 999px;
+      font-size: 13px;
       opacity: 0;
       pointer-events: none;
-      transition: .25s;
-      z-index: 999;
-      white-space: nowrap;
-      box-shadow: 0 7px 25px rgba(0,0,0,0.25);
+      transition: .2s;
+      z-index: 100;
     }
 
     .toast.show {
@@ -296,140 +291,192 @@
       transform: translateX(-50%) translateY(0);
     }
 
-    @media (max-width: 480px) {
+    @media(max-width:480px) {
+
       .container {
-        padding: 12px;
-      }
-
-      .header {
-        padding: 20px 15px 18px;
-      }
-
-      .title {
-        font-size: 24px;
+        padding: 11px;
       }
 
       .card {
-        padding: 16px 14px;
+        padding: 15px 13px;
       }
 
-      .name-grid {
+      .people {
         grid-template-columns: repeat(3, 1fr);
       }
 
-      .name-btn {
+      .person {
         font-size: 13px;
-        padding: 11px 3px;
       }
+
     }
   </style>
 </head>
 
 <body>
 
-<header class="header">
-  <div class="header-inner">
-    <div class="brand">ASM FIELD TOOLS</div>
-    <h1 class="title">ENTRY MESSAGE</h1>
-    <div class="subtitle">입문 보고, 간편하게.</div>
+<header class="top">
+  <div class="top-inner">
 
-    <div class="live-time">
-      <div class="live-time-label">한국 현재 시간</div>
-      <div id="liveTime" class="live-time-value">--</div>
+    <div class="small-title">
+      ASM FIELD TOOLS
     </div>
+
+    <h1>ENTRY MESSAGE</h1>
+
+    <div class="sub">
+      입문 메시지
+    </div>
+
+    <div class="clock-box">
+      <div class="clock-label">
+        한국 시간
+      </div>
+
+      <div id="clock">
+        --
+      </div>
+    </div>
+
   </div>
 </header>
+
 
 <main class="container">
 
   <!-- 지역 -->
+
   <section class="card">
-    <div class="section-title">
-      <span class="number">01</span>
+
+    <div class="card-title">
+      <div class="num">01</div>
       입문 지역
     </div>
 
-    <div class="region-grid">
-      <button class="region-btn active" data-region="청주">청주</button>
-      <button class="region-btn" data-region="이천">이천</button>
-      <button class="region-btn" data-region="용인">용인</button>
+    <div class="region-list">
+
+      <button
+        class="region active"
+        data-region="청주">
+        청주
+      </button>
+
+      <button
+        class="region"
+        data-region="이천">
+        이천
+      </button>
+
+      <button
+        class="region"
+        data-region="용인">
+        용인
+      </button>
+
     </div>
+
   </section>
 
 
-  <!-- 이름 -->
+  <!-- 인원 -->
+
   <section class="card">
-    <div class="section-title">
-      <span class="number">02</span>
+
+    <div class="card-title">
+      <div class="num">02</div>
       입문 인원
     </div>
 
-    <div class="section-desc">
-      함께 입문하는 인원을 모두 선택하세요.
+    <div class="description">
+      함께 입문하는 인원을 선택해 주세요.
     </div>
 
-    <div class="name-toolbar">
-      <div class="count">
-        선택 <strong id="selectedCount">0명</strong>
+    <div class="toolbar">
+
+      <div class="counter">
+        <strong id="count">0명</strong>
+        선택
       </div>
 
-      <button id="clearBtn" class="clear-btn">
+      <button
+        id="clear"
+        class="clear">
         선택 해제
       </button>
+
     </div>
 
-    <div id="nameGrid" class="name-grid"></div>
+    <div
+      id="people"
+      class="people">
+    </div>
+
   </section>
 
 
   <!-- 메시지 -->
+
   <section class="card">
-    <div class="section-title">
-      <span class="number">03</span>
-      입문 메시지
+
+    <div class="card-title">
+      <div class="num">03</div>
+      메시지 작성
     </div>
 
-    <div class="section-desc">
-      생성 버튼을 누른 시각이 메시지에 입력됩니다.
+    <div class="description">
+      생성 버튼을 누른 시각이 입력됩니다.
     </div>
 
-    <div id="preview" class="preview empty">
-지역과 입문자를 선택한 뒤
-메시지 생성 버튼을 눌러주세요.
-    </div>
+    <div
+      id="preview"
+      class="preview placeholder">입문 인원을 선택한 뒤
+메시지 생성 버튼을 눌러주세요.</div>
 
-    <div class="button-row">
-      <button id="generateBtn" class="generate-btn">
+    <div class="actions">
+
+      <button
+        id="generate"
+        class="generate">
         메시지 생성
       </button>
 
-      <button id="copyBtn" class="copy-btn" disabled>
+      <button
+        id="copy"
+        class="copy"
+        disabled>
         메시지 복사
       </button>
+
     </div>
 
-    <div class="notice">
-      실제 안전·보안 체크를 완료한 뒤 메시지를 생성해 주세요.
+    <div class="warning">
+      안전·보안 체크를 마친 뒤 생성해 주세요.<br>
+      복사한 메시지는 카카오톡 등에 붙여넣으면 됩니다.
     </div>
+
   </section>
 
 </main>
 
+
 <div class="footer">
-  ASM Entry Message Helper
+  ASM 입문 메시지 도우미
 </div>
 
-<div id="toast" class="toast">
-  메시지를 복사했습니다.
+
+<div
+  id="toast"
+  class="toast">
 </div>
 
 
 <script>
-  // =============================
-  // 입문자 명단
-  // =============================
 
-  const people = [
+  /* ===========================
+     입문자 명단
+  =========================== */
+
+  const peopleList = [
     "엄재호",
     "오승준",
     "김민서",
@@ -452,272 +499,327 @@
   ];
 
 
-  // =============================
-  // 상태
-  // =============================
-
-  let selectedRegion = "청주";
-  let selectedPeople = [];
-  let generatedMessage = "";
+  let region = "청주";
+  let selected = [];
+  let finalMessage = "";
 
 
-  // =============================
-  // 요소
-  // =============================
+  const peopleBox =
+    document.getElementById("people");
 
-  const liveTimeEl = document.getElementById("liveTime");
-  const nameGridEl = document.getElementById("nameGrid");
-  const selectedCountEl = document.getElementById("selectedCount");
-  const previewEl = document.getElementById("preview");
-  const copyBtn = document.getElementById("copyBtn");
-  const generateBtn = document.getElementById("generateBtn");
-  const clearBtn = document.getElementById("clearBtn");
-  const toastEl = document.getElementById("toast");
+  const countBox =
+    document.getElementById("count");
+
+  const preview =
+    document.getElementById("preview");
+
+  const copyButton =
+    document.getElementById("copy");
+
+  const toast =
+    document.getElementById("toast");
 
 
-  // =============================
-  // 한국 시간
-  // =============================
+  /* ===========================
+     한국시간
+  =========================== */
 
-  function getKoreaDate() {
-    const now = new Date();
+  function koreaDate() {
 
-    const koreaString = now.toLocaleString("en-US", {
-      timeZone: "Asia/Seoul"
-    });
+    const parts =
+      new Intl.DateTimeFormat(
+        "en-CA",
+        {
+          timeZone: "Asia/Seoul",
+          year: "numeric",
+          month: "2-digit",
+          day: "2-digit",
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+          hour12: false
+        }
+      ).formatToParts(new Date());
 
-    return new Date(koreaString);
+    const data = {};
+
+    parts.forEach(
+      item => data[item.type] = item.value
+    );
+
+    return data;
   }
 
 
-  function pad(value) {
-    return String(value).padStart(2, "0");
+  function updateClock() {
+
+    const t = koreaDate();
+
+    document.getElementById("clock")
+      .textContent =
+      `${t.year}.${t.month}.${t.day} ` +
+      `${t.hour}:${t.minute}:${t.second}`;
   }
 
 
-  function formatClock(date) {
-    const year = date.getFullYear();
-    const month = pad(date.getMonth() + 1);
-    const day = pad(date.getDate());
-    const hour = pad(date.getHours());
-    const minute = pad(date.getMinutes());
-    const second = pad(date.getSeconds());
+  updateClock();
 
-    return `${year}.${month}.${day} ${hour}:${minute}:${second}`;
-  }
+  setInterval(
+    updateClock,
+    1000
+  );
 
 
-  function formatMessageTime(date) {
-    const year = date.getFullYear();
-    const month = pad(date.getMonth() + 1);
-    const day = pad(date.getDate());
-    const hour = pad(date.getHours());
-    const minute = pad(date.getMinutes());
-
-    return `${year}.${month}.${day} ${hour}:${minute}`;
-  }
-
-
-  function updateLiveTime() {
-    liveTimeEl.textContent = formatClock(getKoreaDate());
-  }
-
-
-  updateLiveTime();
-  setInterval(updateLiveTime, 1000);
-
-
-  // =============================
-  // 지역 선택
-  // =============================
-
-  document.querySelectorAll(".region-btn").forEach(button => {
-    button.addEventListener("click", () => {
-
-      document.querySelectorAll(".region-btn")
-        .forEach(btn => btn.classList.remove("active"));
-
-      button.classList.add("active");
-
-      selectedRegion = button.dataset.region;
-
-      // 선택을 바꾸면 기존 메시지는 무효화
-      resetGeneratedMessage();
-    });
-  });
-
-
-  // =============================
-  // 이름 버튼 만들기
-  // =============================
+  /* ===========================
+     사람 버튼
+  =========================== */
 
   function renderPeople() {
 
-    nameGridEl.innerHTML = "";
+    peopleBox.innerHTML = "";
 
-    people.forEach(name => {
+    peopleList.forEach(name => {
 
-      const button = document.createElement("button");
+      const button =
+        document.createElement("button");
 
-      button.className = "name-btn";
       button.textContent = name;
 
-      if (selectedPeople.includes(name)) {
-        button.classList.add("active");
+      button.className =
+        "person";
+
+      if(selected.includes(name)) {
+        button.classList.add("selected");
       }
 
-      button.addEventListener("click", () => {
 
-        if (selectedPeople.includes(name)) {
+      button.onclick = () => {
 
-          selectedPeople =
-            selectedPeople.filter(person => person !== name);
+        if(selected.includes(name)) {
 
-        } else {
+          selected =
+            selected.filter(
+              value => value !== name
+            );
 
-          selectedPeople.push(name);
+        }
+
+        else {
+
+          selected.push(name);
 
         }
 
         renderPeople();
-        updateCount();
-        resetGeneratedMessage();
-      });
 
-      nameGridEl.appendChild(button);
+        resetMessage();
+
+      };
+
+
+      peopleBox.appendChild(button);
+
     });
-  }
 
 
-  function updateCount() {
-    selectedCountEl.textContent = `${selectedPeople.length}명`;
+    countBox.textContent =
+      `${selected.length}명`;
+
   }
 
 
   renderPeople();
-  updateCount();
 
 
-  // =============================
-  // 선택 초기화
-  // =============================
+  /* ===========================
+     지역
+  =========================== */
 
-  clearBtn.addEventListener("click", () => {
+  document
+    .querySelectorAll(".region")
+    .forEach(button => {
 
-    selectedPeople = [];
+      button.onclick = () => {
 
-    renderPeople();
-    updateCount();
-    resetGeneratedMessage();
+        document
+          .querySelectorAll(".region")
+          .forEach(
+            item =>
+            item.classList.remove("active")
+          );
 
-  });
+        button.classList.add("active");
+
+        region =
+          button.dataset.region;
+
+        resetMessage();
+
+      };
+
+    });
 
 
-  function resetGeneratedMessage() {
+  /* ===========================
+     전체 선택 해제
+  =========================== */
 
-    generatedMessage = "";
+  document
+    .getElementById("clear")
+    .onclick = () => {
 
-    previewEl.classList.add("empty");
+      selected = [];
 
-    previewEl.textContent =
-`지역과 입문자를 선택한 뒤
+      renderPeople();
+
+      resetMessage();
+
+    };
+
+
+  /* ===========================
+     메시지 초기화
+  =========================== */
+
+  function resetMessage() {
+
+    finalMessage = "";
+
+    preview.classList.add("placeholder");
+
+    preview.textContent =
+`입문 인원을 선택한 뒤
 메시지 생성 버튼을 눌러주세요.`;
 
-    copyBtn.disabled = true;
+    copyButton.disabled = true;
+
   }
 
 
-  // =============================
-  // 메시지 생성
-  // =============================
+  /* ===========================
+     메시지 생성
+  =========================== */
 
-  generateBtn.addEventListener("click", () => {
+  document
+    .getElementById("generate")
+    .onclick = () => {
 
-    if (selectedPeople.length === 0) {
-      showToast("입문자를 선택해 주세요.");
+      if(selected.length === 0) {
+
+        showToast(
+          "입문 인원을 선택해 주세요."
+        );
+
+        return;
+      }
+
+
+      const t = koreaDate();
+
+
+      const time =
+        `${t.hour}:${t.minute}`;
+
+
+      const names =
+        selected.join(", ");
+
+
+      finalMessage =
+`${region} ${time}
+${names}
+안전 및 보안 체크 완료`;
+
+
+      preview.textContent =
+        finalMessage;
+
+
+      preview.classList
+        .remove("placeholder");
+
+
+      copyButton.disabled = false;
+
+
+      showToast(
+        "메시지가 생성되었습니다."
+      );
+
+    };
+
+
+  /* ===========================
+     메시지 복사
+  =========================== */
+
+  copyButton.onclick = async () => {
+
+    if(!finalMessage) {
       return;
     }
 
-    const koreaNow = getKoreaDate();
-    const time = formatMessageTime(koreaNow);
-
-    const names = selectedPeople.join(", ");
-
-    /*
-      ↓↓↓ 메시지 모양을 바꾸고 싶으면
-      이 부분만 수정하면 됩니다.
-    */
-
-    generatedMessage =
-`[${selectedRegion} 입문]
-시간 : ${time}
-입문자 : ${names}
-안전·보안 체크 완료`;
-
-    previewEl.textContent = generatedMessage;
-    previewEl.classList.remove("empty");
-
-    copyBtn.disabled = false;
-
-    showToast("입문 메시지를 생성했습니다.");
-  });
-
-
-  // =============================
-  // 복사
-  // =============================
-
-  copyBtn.addEventListener("click", async () => {
-
-    if (!generatedMessage) return;
 
     try {
 
-      await navigator.clipboard.writeText(generatedMessage);
+      await navigator.clipboard
+        .writeText(finalMessage);
 
-      showToast("메시지를 복사했습니다.");
+    }
 
-    } catch (error) {
+    catch {
 
-      // 일부 모바일 브라우저용 예비 복사 방식
-      const textarea = document.createElement("textarea");
+      const textarea =
+        document.createElement("textarea");
 
-      textarea.value = generatedMessage;
-      textarea.style.position = "fixed";
-      textarea.style.opacity = "0";
+      textarea.value =
+        finalMessage;
 
-      document.body.appendChild(textarea);
+      document.body
+        .appendChild(textarea);
 
       textarea.select();
 
       document.execCommand("copy");
 
-      document.body.removeChild(textarea);
+      textarea.remove();
 
-      showToast("메시지를 복사했습니다.");
     }
 
-  });
+
+    showToast(
+      "메시지를 복사했습니다."
+    );
+
+  };
 
 
-  // =============================
-  // 안내 토스트
-  // =============================
+  /* ===========================
+     토스트
+  =========================== */
 
   let toastTimer;
 
-  function showToast(message) {
+
+  function showToast(text) {
 
     clearTimeout(toastTimer);
 
-    toastEl.textContent = message;
-    toastEl.classList.add("show");
+    toast.textContent = text;
 
-    toastTimer = setTimeout(() => {
-      toastEl.classList.remove("show");
-    }, 1700);
+    toast.classList.add("show");
+
+
+    toastTimer =
+      setTimeout(() => {
+
+        toast.classList
+          .remove("show");
+
+      }, 1600);
 
   }
+
 </script>
 
 </body>
